@@ -17,7 +17,10 @@ import {
 } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff, LogIn } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import loginImage from '@/images/login-right.jpg';
+import Image from 'next/image';
 
 interface SignInFormInputs {
   email: string;
@@ -63,77 +66,140 @@ export default function SignIn() {
   };
 
   return (
-    <div className='flex items-center justify-center min-h-screen bg-background'>
-      <Card className='w-full max-w-md'>
-        <CardHeader>
-          <CardTitle className='text-2xl font-bold text-center'>
-            Sign In to Todo Master
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
-            <div className='space-y-2'>
-              <Label htmlFor='email'>Email</Label>
-              <Input
-                type='email'
-                id='email'
-                {...register('email', { required: 'Email is required' })}
-              />
-              {errors.email && (
-                <Alert variant='destructive'>
-                  <AlertDescription>{errors.email.message}</AlertDescription>
-                </Alert>
-              )}
-            </div>
-            <div className='space-y-2'>
-              <Label htmlFor='password'>Password</Label>
-              <div className='relative'>
-                <Input
-                  type={showPassword ? 'text' : 'password'}
-                  id='password'
-                  {...register('password', {
-                    required: 'Password is required',
-                  })}
+    // <div className='flex items-center justify-center min-h-screen bg-background'>
+    //   <Card className='w-full max-w-md'>
+    //     <CardHeader>
+    //       <CardTitle className='text-2xl font-bold text-center'>
+    //         Sign In to Todo Master
+    //       </CardTitle>
+    //     </CardHeader>
+    //     <CardContent>
+    //       <form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
+    //         <div className='space-y-2'>
+    //           <Label htmlFor='email'>Email</Label>
+    //           <Input
+    //             type='email'
+    //             id='email'
+    //             {...register('email', { required: 'Email is required' })}
+    //           />
+    //           {errors.email && (
+    //             <Alert variant='destructive'>
+    //               <AlertDescription>{errors.email.message}</AlertDescription>
+    //             </Alert>
+    //           )}
+    //         </div>
+    //         <div className='space-y-2'>
+    //           <Label htmlFor='password'>Password</Label>
+    //           <div className='relative'>
+    //             <Input
+    //               type={showPassword ? 'text' : 'password'}
+    //               id='password'
+    //               {...register('password', {
+    //                 required: 'Password is required',
+    //               })}
+    //             />
+    //             <button
+    //               type='button'
+    //               onClick={() => setShowPassword(!showPassword)}
+    //               className='absolute right-2 top-1/2 -translate-y-1/2'>
+    //               {showPassword ? (
+    //                 <EyeOff className='h-4 w-4 text-gray-500' />
+    //               ) : (
+    //                 <Eye className='h-4 w-4 text-gray-500' />
+    //               )}
+    //             </button>
+    //           </div>
+    //           {errors.password && (
+    //             <Alert variant='destructive'>
+    //               <AlertDescription>{errors.password.message}</AlertDescription>
+    //             </Alert>
+    //           )}
+    //         </div>
+    //         <div id='clerk-captcha' />
+    //         {error && (
+    //           <Alert variant='destructive'>
+    //             <AlertDescription>{error}</AlertDescription>
+    //           </Alert>
+    //         )}
+    //         <Button type='submit' className='w-full'>
+    //           <LogIn />
+    //           Sign In
+    //         </Button>
+    //       </form>
+    //     </CardContent>
+    //     <CardFooter className='justify-center'>
+    //       <p className='text-sm text-muted-foreground'>
+    //         Don&apos;t have an account?{' '}
+    //         <Link
+    //           href='/signup'
+    //           className='font-medium text-primary hover:underline'>
+    //           Sign up
+    //         </Link>
+    //       </p>
+    //     </CardFooter>
+    //   </Card>
+    // </div>
+
+    <div className='flex min-h-svh flex-col items-center justify-center bg-muted p-6 md:p-10'>
+      <div className='w-full max-w-sm md:max-w-3xl'>
+        <div className={cn('flex flex-col gap-6')}>
+          <Card className='overflow-hidden'>
+            <CardContent className='grid p-0 md:grid-cols-2'>
+              <div className='relative hidden bg-muted md:block'>
+                <Image
+                  src={loginImage}
+                  alt='Image'
+                  className='absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale'
                 />
-                <button
-                  type='button'
-                  onClick={() => setShowPassword(!showPassword)}
-                  className='absolute right-2 top-1/2 -translate-y-1/2'>
-                  {showPassword ? (
-                    <EyeOff className='h-4 w-4 text-gray-500' />
-                  ) : (
-                    <Eye className='h-4 w-4 text-gray-500' />
-                  )}
-                </button>
               </div>
-              {errors.password && (
-                <Alert variant='destructive'>
-                  <AlertDescription>{errors.password.message}</AlertDescription>
-                </Alert>
-              )}
-            </div>
-            <div id='clerk-captcha' />
-            {error && (
-              <Alert variant='destructive'>
-                <AlertDescription>{error}</AlertDescription>
-              </Alert>
-            )}
-            <Button type='submit' className='w-full'>
-              Sign In
-            </Button>
-          </form>
-        </CardContent>
-        <CardFooter className='justify-center'>
-          <p className='text-sm text-muted-foreground'>
-            Don&apos;t have an account?{' '}
-            <Link
-              href='/signup'
-              className='font-medium text-primary hover:underline'>
-              Sign up
-            </Link>
-          </p>
-        </CardFooter>
-      </Card>
+              <form className='p-6 md:p-8'>
+                <div className='flex flex-col gap-6'>
+                  <div className='flex flex-col items-center text-center'>
+                    <h1 className='text-2xl font-bold'>Welcome back</h1>
+                    <p className='text-balance text-muted-foreground'>
+                      Login to your Acme Inc account
+                    </p>
+                  </div>
+                  <div className='grid gap-2'>
+                    <Label htmlFor='email'>Email</Label>
+                    <Input
+                      id='email'
+                      type='email'
+                      placeholder='m@example.com'
+                      required
+                    />
+                  </div>
+                  <div className='grid gap-2'>
+                    <div className='flex items-center'>
+                      <Label htmlFor='password'>Password</Label>
+                      <a
+                        href='#'
+                        className='ml-auto text-sm underline-offset-2 hover:underline'>
+                        Forgot your password?
+                      </a>
+                    </div>
+                    <Input id='password' type='password' required />
+                  </div>
+                  <Button type='submit' className='w-full'>
+                    Login
+                  </Button>
+
+                  <div className='text-center text-sm'>
+                    Don&apos;t have an account?{' '}
+                    <a href='#' className='underline underline-offset-4'>
+                      Sign up
+                    </a>
+                  </div>
+                </div>
+              </form>
+            </CardContent>
+          </Card>
+          <div className='text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary'>
+            By clicking continue, you agree to our{' '}
+            <a href='#'>Terms of Service</a> and <a href='#'>Privacy Policy</a>.
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

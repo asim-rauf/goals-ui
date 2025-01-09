@@ -16,7 +16,7 @@ import {
 } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Eye, EyeOff } from 'lucide-react';
+import { BadgeCheck, Eye, EyeOff, UserPlus } from 'lucide-react';
 
 export default function SignUp() {
   const { isLoaded, signUp, setActive } = useSignUp();
@@ -83,7 +83,7 @@ export default function SignUp() {
       <Card className='w-full max-w-md'>
         <CardHeader>
           <CardTitle className='text-2xl font-bold text-center'>
-            Sign Up
+            Register
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -129,6 +129,7 @@ export default function SignUp() {
                 </Alert>
               )}
               <Button type='submit' className='w-full'>
+                <UserPlus />
                 Sign Up
               </Button>
             </form>
@@ -150,6 +151,7 @@ export default function SignUp() {
                 </Alert>
               )}
               <Button type='submit' className='w-full'>
+                <BadgeCheck />
                 Verify Email
               </Button>
             </form>
