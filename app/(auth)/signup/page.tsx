@@ -7,16 +7,13 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-  CardFooter,
-} from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { BadgeCheck, Eye, EyeOff, UserPlus } from 'lucide-react';
+import loginImage from '@/images/login-right.jpg';
+import Image from 'next/image';
+import { cn } from '@/lib/utils';
 
 export default function SignUp() {
   const { isLoaded, signUp, setActive } = useSignUp();
@@ -79,95 +76,114 @@ export default function SignUp() {
   }
 
   return (
-    <div className='flex items-center justify-center min-h-screen bg-background'>
-      <Card className='w-full max-w-md'>
-        <CardHeader>
-          <CardTitle className='text-2xl font-bold text-center'>
-            Register
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          {!pendingVerification ? (
-            <form onSubmit={submit} className='space-y-4'>
-              <div className='space-y-2'>
-                <Label htmlFor='email'>Email</Label>
-                <Input
-                  type='email'
-                  id='email'
-                  value={emailAddress}
-                  onChange={(e) => setEmailAddress(e.target.value)}
-                  required
+    <div className='flex min-h-screen flex-col items-center justify-center bg-muted p-6 md:p-10'>
+      <div className='w-full max-w-sm md:max-w-3xl'>
+        <div className={cn('flex flex-col gap-6')}>
+          <Card className='overflow-hidden'>
+            <CardContent className='grid p-0 md:grid-cols-2'>
+              <div className='relative hidden bg-muted md:block'>
+                <Image
+                  src={loginImage}
+                  alt='Image'
+                  className='absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale'
                 />
               </div>
-              <div className='space-y-2'>
-                <Label htmlFor='password'>Password</Label>
-                <div className='relative'>
-                  <Input
-                    type={showPassword ? 'text' : 'password'}
-                    id='password'
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                  />
-                  <button
-                    type='button'
-                    onClick={() => setShowPassword(!showPassword)}
-                    className='absolute right-2 top-1/2 -translate-y-1/2'>
-                    {showPassword ? (
-                      <EyeOff className='h-4 w-4 text-gray-500' />
-                    ) : (
-                      <Eye className='h-4 w-4 text-gray-500' />
-                    )}
-                  </button>
+              <form
+                onSubmit={!pendingVerification ? submit : onPressVerify}
+                className='p-6 md:p-8'>
+                <div className='flex flex-col gap-6'>
+                  <div className='flex flex-col items-center text-center'>
+                    <h1 className='text-2xl font-bold'>
+                      {pendingVerification
+                        ? 'Verify Your Email'
+                        : 'Create an Account'}
+                    </h1>
+                    <p className='text-balance text-muted-foreground'>
+                      {pendingVerification
+                        ? 'Enter the code sent to your email to verify your account'
+                        : 'Sign up for an Acme Inc account'}
+                    </p>
+                  </div>
+                  {!pendingVerification ? (
+                    <>
+                      <div className='grid gap-2'>
+                        <Label htmlFor='email'>Email</Label>
+                        <Input
+                          id='email'
+                          type='email'
+                          value={emailAddress}
+                          onChange={(e) => setEmailAddress(e.target.value)}
+                          placeholder='m@example.com'
+                          required
+                        />
+                      </div>
+                      <div className='grid gap-2'>
+                        <Label htmlFor='password'>Password</Label>
+                        <div className='relative'>
+                          <Input
+                            type={showPassword ? 'text' : 'password'}
+                            id='password'
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                          />
+                          <button
+                            type='button'
+                            onClick={() => setShowPassword(!showPassword)}
+                            className='absolute right-2 top-1/2 -translate-y-1/2'>
+                            {showPassword ? (
+                              <EyeOff className='h-4 w-4 text-gray-500' />
+                            ) : (
+                              <Eye className='h-4 w-4 text-gray-500' />
+                            )}
+                          </button>
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className='grid gap-2'>
+                        <Label htmlFor='code'>Verification Code</Label>
+                        <Input
+                          id='code'
+                          value={code}
+                          onChange={(e) => setCode(e.target.value)}
+                          placeholder='Enter verification code'
+                          required
+                        />
+                      </div>
+                    </>
+                  )}
+                  <div id='clerk-captcha' />
+                  {error && (
+                    <Alert variant='destructive'>
+                      <AlertDescription>{error}</AlertDescription>
+                    </Alert>
+                  )}
+                  <Button type='submit' className='w-full'>
+                    {pendingVerification ? <BadgeCheck /> : <UserPlus />}
+                    {pendingVerification ? 'Verify Email' : 'Sign Up'}
+                  </Button>
+                  {!pendingVerification && (
+                    <div className='text-center text-sm'>
+                      Already have an account?{' '}
+                      <Link
+                        href='/signin'
+                        className='font-medium text-primary hover:underline underline underline-offset-4'>
+                        Sign in
+                      </Link>
+                    </div>
+                  )}
                 </div>
-              </div>
-              <div id='clerk-captcha' />
-
-              {error && (
-                <Alert variant='destructive'>
-                  <AlertDescription>{error}</AlertDescription>
-                </Alert>
-              )}
-              <Button type='submit' className='w-full'>
-                <UserPlus />
-                Sign Up
-              </Button>
-            </form>
-          ) : (
-            <form onSubmit={onPressVerify} className='space-y-4'>
-              <div className='space-y-2'>
-                <Label htmlFor='code'>Verification Code</Label>
-                <Input
-                  id='code'
-                  value={code}
-                  onChange={(e) => setCode(e.target.value)}
-                  placeholder='Enter verification code'
-                  required
-                />
-              </div>
-              {error && (
-                <Alert variant='destructive'>
-                  <AlertDescription>{error}</AlertDescription>
-                </Alert>
-              )}
-              <Button type='submit' className='w-full'>
-                <BadgeCheck />
-                Verify Email
-              </Button>
-            </form>
-          )}
-        </CardContent>
-        <CardFooter className='justify-center'>
-          <p className='text-sm text-muted-foreground'>
-            Already have an account?{' '}
-            <Link
-              href='/signin'
-              className='font-medium text-primary hover:underline'>
-              Sign in
-            </Link>
-          </p>
-        </CardFooter>
-      </Card>
+              </form>
+            </CardContent>
+          </Card>
+          <div className='text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary'>
+            By clicking continue, you agree to our{' '}
+            <a href='#'>Terms of Service</a> and <a href='#'>Privacy Policy</a>.
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
