@@ -8,13 +8,7 @@ import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-  CardFooter,
-} from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Eye, EyeOff, LogIn } from 'lucide-react';
@@ -74,55 +68,24 @@ export default function SignIn() {
     //       </CardTitle>
     //     </CardHeader>
     //     <CardContent>
-    //       <form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
+    //       <form  className='space-y-4'>
     //         <div className='space-y-2'>
     //           <Label htmlFor='email'>Email</Label>
     //           <Input
     //             type='email'
     //             id='email'
-    //             {...register('email', { required: 'Email is required' })}
+    //
     //           />
-    //           {errors.email && (
-    //             <Alert variant='destructive'>
-    //               <AlertDescription>{errors.email.message}</AlertDescription>
-    //             </Alert>
-    //           )}
+    //
     //         </div>
     //         <div className='space-y-2'>
     //           <Label htmlFor='password'>Password</Label>
-    //           <div className='relative'>
-    //             <Input
-    //               type={showPassword ? 'text' : 'password'}
-    //               id='password'
-    //               {...register('password', {
-    //                 required: 'Password is required',
-    //               })}
-    //             />
-    //             <button
-    //               type='button'
-    //               onClick={() => setShowPassword(!showPassword)}
-    //               className='absolute right-2 top-1/2 -translate-y-1/2'>
-    //               {showPassword ? (
-    //                 <EyeOff className='h-4 w-4 text-gray-500' />
-    //               ) : (
-    //                 <Eye className='h-4 w-4 text-gray-500' />
-    //               )}
-    //             </button>
-    //           </div>
-    //           {errors.password && (
-    //             <Alert variant='destructive'>
-    //               <AlertDescription>{errors.password.message}</AlertDescription>
-    //             </Alert>
-    //           )}
+
+    //
     //         </div>
-    //         <div id='clerk-captcha' />
-    //         {error && (
-    //           <Alert variant='destructive'>
-    //             <AlertDescription>{error}</AlertDescription>
-    //           </Alert>
-    //         )}
+
     //         <Button type='submit' className='w-full'>
-    //           <LogIn />
+    //
     //           Sign In
     //         </Button>
     //       </form>
@@ -152,7 +115,7 @@ export default function SignIn() {
                   className='absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale'
                 />
               </div>
-              <form className='p-6 md:p-8'>
+              <form onSubmit={handleSubmit(onSubmit)} className='p-6 md:p-8'>
                 <div className='flex flex-col gap-6'>
                   <div className='flex flex-col items-center text-center'>
                     <h1 className='text-2xl font-bold'>Welcome back</h1>
@@ -166,8 +129,15 @@ export default function SignIn() {
                       id='email'
                       type='email'
                       placeholder='m@example.com'
-                      required
+                      {...register('email', { required: 'Email is required' })}
                     />
+                    {errors.email && (
+                      <Alert variant='destructive'>
+                        <AlertDescription>
+                          {errors.email.message}
+                        </AlertDescription>
+                      </Alert>
+                    )}
                   </div>
                   <div className='grid gap-2'>
                     <div className='flex items-center'>
@@ -178,17 +148,51 @@ export default function SignIn() {
                         Forgot your password?
                       </a>
                     </div>
-                    <Input id='password' type='password' required />
+                    <div className='relative'>
+                      <Input
+                        type={showPassword ? 'text' : 'password'}
+                        id='password'
+                        {...register('password', {
+                          required: 'Password is required',
+                        })}
+                      />
+                      <button
+                        type='button'
+                        onClick={() => setShowPassword(!showPassword)}
+                        className='absolute right-2 top-1/2 -translate-y-1/2'>
+                        {showPassword ? (
+                          <EyeOff className='h-4 w-4 text-gray-500' />
+                        ) : (
+                          <Eye className='h-4 w-4 text-gray-500' />
+                        )}
+                      </button>
+                    </div>
+                    {errors.password && (
+                      <Alert variant='destructive'>
+                        <AlertDescription>
+                          {errors.password.message}
+                        </AlertDescription>
+                      </Alert>
+                    )}
                   </div>
+                  <div id='clerk-captcha' />
+                  {error && (
+                    <Alert variant='destructive'>
+                      <AlertDescription>{error}</AlertDescription>
+                    </Alert>
+                  )}
                   <Button type='submit' className='w-full'>
+                    <LogIn />
                     Login
                   </Button>
 
                   <div className='text-center text-sm'>
                     Don&apos;t have an account?{' '}
-                    <a href='#' className='underline underline-offset-4'>
+                    <Link
+                      href='/signup'
+                      className='font-medium text-primary hover:underline underline underline-offset-4'>
                       Sign up
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </form>
