@@ -19,12 +19,12 @@ import {
 } from '@/components/ui/card';
 import { ChartConfig, ChartContainer } from '@/components/ui/chart';
 const chartData = [
-  { browser: 'safari', visitors: 200, fill: 'var(--color-safari)' },
+  { browser: 'safari', visitors: 200, fill: 'var(--background)' },
 ];
 
 const chartConfig = {
   visitors: {
-    label: 'Visitors',
+    label: 'Goals',
   },
   safari: {
     label: 'Safari',
@@ -36,8 +36,8 @@ export function RadialGoalsChart() {
   return (
     <Card className='flex flex-col'>
       <CardHeader className='items-center pb-0'>
-        <CardTitle>Radial Chart - Text</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardTitle>Goals</CardTitle>
+        <CardDescription>January 2024</CardDescription>
       </CardHeader>
       <CardContent className='flex-1 pb-0'>
         <ChartContainer

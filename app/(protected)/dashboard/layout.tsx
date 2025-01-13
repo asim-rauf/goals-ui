@@ -40,7 +40,7 @@ export default function DashboardLayout({
             </BreadcrumbList>
           </Breadcrumb>
         </header>
-        {children}
+        <div className='container mx-auto md:max-w-screen-xl'>{children}</div>
       </SidebarInset>
     </SidebarProvider>
   );
