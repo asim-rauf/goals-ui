@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { JSX, ReactNode, useState } from 'react';
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -24,17 +24,21 @@ import {
 } from '@/components/ui/table';
 import { DataTablePagination } from '@/components/data-table/pagination';
 import { Input } from '@/components/ui/input';
-
-import { DataTableViewOptions } from '@/components/data-table/view-options';
-
+import { DataTableViewOptions } from './view-options';
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  showAddAction?: boolean;
+  buttonTitle?: string;
+  buttonIcon?: JSX.Element;
+  renderSheetContent?: ReactNode;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  showAddAction = false,
+  renderSheetContent,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -61,7 +65,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <>
-      <div className='flex items-center py-4'>
+      <div className='flex items-center py-4 justify-between'>
         <Input
           placeholder='Filter emails...'
           value={(table.getColumn('email')?.getFilterValue() as string) ?? ''}
@@ -70,7 +74,11 @@ export function DataTable<TData, TValue>({
           }
           className='max-w-sm'
         />
-        <DataTableViewOptions table={table} />
+        <div className='flex gap-x-4'>
+          {showAddAction && renderSheetContent}
+
+          <DataTableViewOptions table={table} />
+        </div>
       </div>
       <div className='rounded-md border'>
         <Table>
