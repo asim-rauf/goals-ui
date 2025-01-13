@@ -26,13 +26,13 @@ const data = {
       url: '#',
       items: [
         {
-          title: 'Installation',
-          url: '#',
+          title: 'Tasks',
+          url: '/dashboard/tasks',
           isActive: true,
         },
         {
-          title: 'Project Structure',
-          url: '#',
+          title: 'Goals',
+          url: '/dashboard/goals',
         },
       ],
     },
@@ -70,8 +70,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <div className='py-2 flex justify-center items-center'>
           <Button
             size={'sm'}
-            variant={'default'}
-            className='w-[70%]'
+            variant={'ghost'}
+            className='w-[70%] font-bold fo'
             onClick={() => signOut({ redirectUrl: '/signin' })}>
             <LogOut />
             Sign Out
