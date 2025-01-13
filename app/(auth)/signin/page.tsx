@@ -99,11 +99,11 @@ export default function SignIn() {
                   <div className='grid gap-2'>
                     <div className='flex items-center'>
                       <Label htmlFor='password'>Password</Label>
-                      <a
-                        href='#'
+                      <Link
+                        href={'/forgot-password'}
                         className='ml-auto text-sm underline-offset-2 hover:underline'>
                         Forgot your password?
-                      </a>
+                      </Link>
                     </div>
                     <div className='relative'>
                       <Input
