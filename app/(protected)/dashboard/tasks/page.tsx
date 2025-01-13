@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { Card } from '@/components/ui/card';
 
 // Fetch data from your API here.
 const data: Payment[] = [
@@ -35,44 +36,42 @@ export default function Page() {
     console.log('Form submitted');
   };
   return (
-    <>
-      <div className='py-10'>
-        <DataTable
-          columns={columns}
-          data={data}
-          showAddAction={true}
-          renderSheetContent={
-            <form onSubmit={handleSubmit}>
-              <CommonSheet
-                title='Add Task'
-                description='Add tasks and get closer to your goals'
-                triggerText='Add Task'
-                footer={
-                  <SheetClose asChild>
-                    <Button type='submit'>Save changes</Button>
-                  </SheetClose>
-                }>
-                <div className='grid grid-cols-4 items-center gap-4'>
-                  <Label htmlFor='name' className='text-center'>
-                    Title:
-                  </Label>
-                  <Input
-                    id='name'
-                    placeholder='Task title'
-                    className='col-span-3'
-                  />
-                </div>
-                <div className='grid grid-cols-4 items-center gap-4'>
-                  <Label htmlFor='username' className='text-right'>
-                    Description:
-                  </Label>
-                  <Textarea className='col-span-3' placeholder='Description ' />
-                </div>
-              </CommonSheet>
-            </form>
-          }
-        />
-      </div>
-    </>
+    <Card className='my-10 px-8 py-4 rounded-md'>
+      <DataTable
+        columns={columns}
+        data={data}
+        showAddAction={true}
+        renderSheetContent={
+          <form onSubmit={handleSubmit}>
+            <CommonSheet
+              title='Add Task'
+              description='Add tasks and get closer to your goals'
+              triggerText='Add Task'
+              footer={
+                <SheetClose asChild>
+                  <Button type='submit'>Save changes</Button>
+                </SheetClose>
+              }>
+              <div className='grid grid-cols-4 items-center gap-4'>
+                <Label htmlFor='name' className='text-center'>
+                  Title:
+                </Label>
+                <Input
+                  id='name'
+                  placeholder='Task title'
+                  className='col-span-3'
+                />
+              </div>
+              <div className='grid grid-cols-4 items-center gap-4'>
+                <Label htmlFor='username' className='text-right'>
+                  Description:
+                </Label>
+                <Textarea className='col-span-3' placeholder='Description ' />
+              </div>
+            </CommonSheet>
+          </form>
+        }
+      />
+    </Card>
   );
 }
