@@ -4,16 +4,19 @@ import { DataTableColumnHeader } from '@/components/data-table/sortable';
 import { Checkbox } from '@/components/ui/checkbox';
 import { ColumnDef } from '@tanstack/react-table';
 
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
-export type Payment = {
-  id: string;
-  amount: number;
-  status: 'pending' | 'processing' | 'success' | 'failed';
-  email: string;
+// Define the type of the data structure
+export type DataType = {
+  id: number;
+  title: string;
+  description: string;
+  type: string; // Replace with an enum if necessary: 'LONG_TERM' | 'SHORT_TERM'
+  userId: string;
+  createdAt: string; // ISO Date string
+  updatedAt: string; // ISO Date string
 };
 
-export const columns: ColumnDef<Payment>[] = [
+// Column definitions
+export const columns: ColumnDef<DataType>[] = [
   {
     id: 'select',
     header: ({ table }) => (
@@ -37,17 +40,32 @@ export const columns: ColumnDef<Payment>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'status',
-    header: 'Status',
-  },
-  {
-    accessorKey: 'email',
+    accessorKey: 'title',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Email' />
+      <DataTableColumnHeader column={column} title='Title' />
     ),
+    enableSorting: true, // Enable sorting for the title column
   },
   {
-    accessorKey: 'amount',
-    header: 'Amount',
+    accessorKey: 'description',
+    header: 'Description',
+  },
+  {
+    accessorKey: 'type',
+    header: 'Type',
+  },
+  {
+    accessorKey: 'userId',
+    header: 'User ID',
+  },
+  {
+    accessorKey: 'createdAt',
+    header: 'Created At',
+    cell: ({ row }) => new Date(row.original.createdAt).toLocaleString(), // Format the date
+  },
+  {
+    accessorKey: 'updatedAt',
+    header: 'Updated At',
+    cell: ({ row }) => new Date(row.original.updatedAt).toLocaleString(), // Format the date
   },
 ];

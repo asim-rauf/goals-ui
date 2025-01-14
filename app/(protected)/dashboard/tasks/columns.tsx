@@ -4,16 +4,27 @@ import { DataTableColumnHeader } from '@/components/data-table/sortable';
 import { Checkbox } from '@/components/ui/checkbox';
 import { ColumnDef } from '@tanstack/react-table';
 
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
-export type Payment = {
+// This type is used to define the shape of your data.
+export type Goal = {
   id: string;
-  amount: number;
-  status: 'pending' | 'processing' | 'success' | 'failed';
-  email: string;
+  title: string;
+  description: string;
+  goalId: number;
+  due: string;
+  createdAt: string;
+  updatedAt: string;
+  goal: {
+    id: number;
+    title: string; // Goal Name
+    description: string;
+    type: string;
+    userId: string;
+    createdAt: string;
+    updatedAt: string;
+  };
 };
 
-export const columns: ColumnDef<Payment>[] = [
+export const columns: ColumnDef<Goal>[] = [
   {
     id: 'select',
     header: ({ table }) => (
@@ -37,17 +48,31 @@ export const columns: ColumnDef<Payment>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'status',
-    header: 'Status',
-  },
-  {
-    accessorKey: 'email',
+    accessorKey: 'title', // Task Title
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Email' />
+      <DataTableColumnHeader column={column} title='Task Name' />
     ),
   },
   {
-    accessorKey: 'amount',
-    header: 'Amount',
+    accessorKey: 'description', // Task Description
+    header: 'Description',
+  },
+  {
+    accessorKey: 'due', // Task Due Date
+    header: 'Due Date',
+  },
+  {
+    accessorKey: 'createdAt', // Task Created Date
+    header: 'Created At',
+  },
+  {
+    accessorKey: 'updatedAt', // Task Updated Date
+    header: 'Updated At',
+  },
+  {
+    accessorKey: 'goal.title', // Only the Goal Title (Goal Name)
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Goal Name' />
+    ),
   },
 ];

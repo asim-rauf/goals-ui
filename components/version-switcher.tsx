@@ -12,6 +12,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
+import Link from 'next/link';
 
 export function VersionSwitcher({}: {
   versions: string[];
@@ -29,7 +30,7 @@ export function VersionSwitcher({}: {
                 <GalleryVerticalEnd className='size-4' />
               </div>
               <div className='flex flex-col gap-0.5 leading-none'>
-                <span className='font-semibold'>My Goals</span>
+                <Link href={'/dashboard'}>My Goals</Link>
                 {/* <span className=''>v{selectedVersion}</span> */}
               </div>
             </SidebarMenuButton>

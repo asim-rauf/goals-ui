@@ -16,6 +16,7 @@ import {
 import { Button } from './ui/button';
 import { useClerk } from '@clerk/nextjs';
 import { LogOut } from 'lucide-react';
+import Link from 'next/link';
 
 // This is sample data.
 const data = {
@@ -59,7 +60,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 {item.items.map((item) => (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton asChild isActive={item.isActive}>
-                      <a href={item.url}>{item.title}</a>
+                      <Link href={item.url}>{item.title}</Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}

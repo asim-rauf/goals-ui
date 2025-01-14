@@ -13,7 +13,6 @@ import {
   useReactTable,
   VisibilityState,
 } from '@tanstack/react-table';
-
 import {
   Table,
   TableBody,
@@ -25,6 +24,8 @@ import {
 import { DataTablePagination } from '@/components/data-table/pagination';
 import { Input } from '@/components/ui/input';
 import { DataTableViewOptions } from './view-options';
+import Loading from './loading';
+
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
@@ -32,6 +33,7 @@ interface DataTableProps<TData, TValue> {
   buttonTitle?: string;
   buttonIcon?: JSX.Element;
   renderSheetContent?: ReactNode;
+  loading?: boolean;
 }
 
 export function DataTable<TData, TValue>({
@@ -39,13 +41,16 @@ export function DataTable<TData, TValue>({
   data,
   showAddAction = false,
   renderSheetContent,
+  loading = false, // Default loading value
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
+
+  // React Table setup
   const table = useReactTable({
-    data,
+    data: data ?? [],
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -67,42 +72,61 @@ export function DataTable<TData, TValue>({
     <>
       <div className='flex items-center py-4 justify-between'>
         <Input
-          placeholder='Filter emails...'
-          value={(table.getColumn('email')?.getFilterValue() as string) ?? ''}
+          placeholder='Filter goals...'
+          value={(table.getColumn('title')?.getFilterValue() as string) ?? ''}
           onChange={(event) =>
-            table.getColumn('email')?.setFilterValue(event.target.value)
+            table.getColumn('title')?.setFilterValue(event.target.value)
           }
           className='max-w-sm'
         />
         <div className='flex gap-x-4'>
-          {showAddAction && renderSheetContent}
-
+          {showAddAction && renderSheetContent}{' '}
+          {/* Render additional action content */}
           <DataTableViewOptions table={table} />
         </div>
       </div>
-      <div className='rounded-md border'>
+
+      <div className='relative rounded-md border'>
         <Table>
           <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
+            {table?.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
+                {headerGroup?.headers.map((header) => (
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </TableHead>
+                ))}
               </TableRow>
             ))}
           </TableHeader>
+
           <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
+            {loading ? (
+              // Wrap the loading spinner here to show within the TableBody
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className='h-24 text-center'>
+                  <Loading />
+                </TableCell>
+              </TableRow>
+            ) : data?.length === 0 ? (
+              // 'No results' message inside TableBody
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className='h-24 text-center'>
+                  No results.
+                </TableCell>
+              </TableRow>
+            ) : (
+              // Table rows when data is present
+              table?.getRowModel()?.rows.map((row) => (
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}>
@@ -116,18 +140,11 @@ export function DataTable<TData, TValue>({
                   ))}
                 </TableRow>
               ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className='h-24 text-center'>
-                  No results.
-                </TableCell>
-              </TableRow>
             )}
           </TableBody>
         </Table>
       </div>
+
       <div className='my-4 mx-2'>
         <DataTablePagination
           table={table}
