@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig, AxiosInstance } from 'axios';
 
 // Create Axios instance
 const apiClient: AxiosInstance = axios.create({
-  baseURL: 'http://localhost:4000', // Replace with your API's base URL
+  baseURL: process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:4000', // Replace with your API's base URL
   timeout: 10000, // Timeout for requests
   headers: {
     'Content-Type': 'application/json',
