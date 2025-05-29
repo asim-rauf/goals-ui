@@ -1,14 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { apiRequest } from '.';
 
-export const addGoal = async (data: {
-  type: string;
-  title: string;
-  userId: string | null | undefined;
-  description: string;
-}) => {
+export const addGoal = async (data: any) => {
   try {
-    return await apiRequest<any>('/goals', 'POST', data, false);
+    return await apiRequest<any>('/api/upload', 'POST', data, false);
   } catch (error) {
     throw error;
   }

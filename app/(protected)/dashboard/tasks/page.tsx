@@ -79,7 +79,7 @@ export default function Page() {
                 <Input
                   id='title'
                   {...register('title', { required: 'Title is required' })}
-                  placeholder='Goal title'
+                  placeholder='Task title'
                 />
                 {errors.title && (
                   <p className='text-red-500'>{errors.title.message}</p>
@@ -108,7 +108,12 @@ export default function Page() {
                   render={({ field }) => (
                     <Select onValueChange={field.onChange} value={field.value}>
                       <SelectTrigger>
-                        <SelectValue placeholder='Select a goal ' />
+                        <SelectValue>
+                          {goals?.find(
+                            (goal: { id: string; title: string }) =>
+                              String(goal.id) === field.value
+                          )?.title || 'Select a goal'}
+                        </SelectValue>
                       </SelectTrigger>
                       <SelectContent>
                         {goals?.map((goal: { id: string; title: string }) => (

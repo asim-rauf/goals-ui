@@ -30,7 +30,7 @@ export function VersionSwitcher({}: {
                 <GalleryVerticalEnd className='size-4' />
               </div>
               <div className='flex flex-col gap-0.5 leading-none'>
-                <Link href={'/dashboard'}>My Goals</Link>
+                <Link href={'/dashboard'}>My Reports</Link>
                 {/* <span className=''>v{selectedVersion}</span> */}
               </div>
             </SidebarMenuButton>
