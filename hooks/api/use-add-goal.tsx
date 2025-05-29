@@ -1,47 +1,37 @@
 import { useMutation } from '@tanstack/react-query';
-import { addGoal } from './api-actions';
-import { useAuth } from '@clerk/nextjs';
+import axios from 'axios';
 import { toast } from '../use-toast';
-import { queryClient } from '@/contexts/query-client';
-import { API_TAGS } from './api-tags';
-interface FormData {
-  title: string;
-  description: string;
-  goalType: string;
-}
 
-const useAddGoal = () => {
-  const { userId } = useAuth();
+const uploadFileApi = async (formData: FormData) => {
+  const response = await axios.post(
+    'http://localhost:3000/api/upload',
+    formData,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    }
+  );
+  return response.data;
+};
+
+export default function useUploadFile() {
   return useMutation({
-    mutationFn: async ({ title, description, goalType }: FormData) => {
-      const body = {
-        title,
-        type: goalType,
-        description,
-        userId,
-      };
-      try {
-        const response = await addGoal(body);
-        toast({
-          variant: 'default',
-          title: 'Success',
-          description: response.message,
-        });
-      } catch (err) {
-        toast({
-          variant: 'destructive',
-          title: 'Error',
-          description: 'Something went wrong',
-        });
-        console.log(err);
-      }
+    mutationFn: uploadFileApi,
+    onSuccess: () => {
+      toast({
+        variant: 'default',
+        title: 'Success',
+        description:
+          'File Uploaded Successfully. Pleas wait report is being generated',
+      });
     },
-    onSettled: () => {
-      queryClient.invalidateQueries({
-        queryKey: [API_TAGS.GET_GOALS],
-        exact: false,
+    onError: () => {
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Failed to upload file.',
       });
     },
   });
-};
-export default useAddGoal;
+}

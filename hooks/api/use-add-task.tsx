@@ -35,7 +35,7 @@ const useAddTask = () => {
     },
     onSettled: () => {
       queryClient.invalidateQueries({
-        queryKey: [API_TAGS.GET_GOALS],
+        queryKey: [API_TAGS.GET_TASKS],
         exact: false,
       });
     },

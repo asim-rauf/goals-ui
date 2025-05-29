@@ -27,14 +27,14 @@ const data = {
       url: '#',
       items: [
         {
-          title: 'Tasks',
-          url: '/dashboard/tasks',
+          title: 'Reports',
+          url: '/dashboard/reports',
           isActive: true,
         },
-        {
-          title: 'Goals',
-          url: '/dashboard/goals',
-        },
+        // {
+        //   title: 'Goals',
+        //   url: '/dashboard/goals',
+        // },
       ],
     },
   ],
